@@ -551,10 +551,10 @@ public class ScriptGui extends LuaTable implements InputSubscriber {
         }
 
         @Override
-        public boolean mouseScrolled(double x, double y, double horizontalScroll, double verticalScroll) {
-            return super.onScroll(gui, verticalScroll) ||
-                    ScriptGui.this.onScroll(this, verticalScroll) ||
-                    (parentGui != null && parentGui.onScroll(parentGui.gui, verticalScroll));
+        public boolean mouseScrolled(double x, double y, double amountScrolled) {
+            return super.mouseScrolled(x, y, amountScrolled) ||
+                    ScriptGui.this.onScroll(this, amountScrolled) ||
+                    (parentGui != null && parentGui.onScroll(parentGui.gui, amountScrolled));
         }
 
         @Override

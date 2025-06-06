@@ -166,7 +166,7 @@ public class EditorGUI extends Gui {
     public void openScript(String sScript) {
         cta.openScript(sScript);
         gtf.setText(sScript);
-        gtf.setCursor(0, false);
+        gtf.setCursor(0);
     }
 
 }

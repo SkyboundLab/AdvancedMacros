@@ -68,6 +68,10 @@ import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import com.google.gson.JsonElement;
+import com.google.gson.JsonParser;
+import net.minecraft.text.Text;
+
 public class Utils {
 
     public static String LuaTableToString(LuaTable sTable) {
@@ -614,7 +618,7 @@ public class Utils {
     }
 
     public static Text luaTableToComponentJson(LuaTable table) {
-        String msg = "[\"\","; //["",
+        String msg = "[\"\","; // Starting JSON array for components
 
         if (table.length() == 0) {
             msg += parseTableToComJson(table) + "]";
@@ -626,9 +630,18 @@ public class Utils {
                     msg += ",";
                 }
             }
+            msg += "]";
         }
-        System.out.println(msg + "]");
-        return Text.Serialization.fromJson(msg + "]");
+
+        System.out.println(msg);
+
+        try {
+            JsonElement jsonElement = JsonParser.parseString(msg);
+            return Text.Serializer.fromJson(jsonElement);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return Text.literal(msg);
+        }
     }
 
     private static String parseTableToComJson(LuaTable table) {

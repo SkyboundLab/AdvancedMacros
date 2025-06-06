@@ -896,12 +896,12 @@ public class EventHandler {
     public class SoundListener implements SoundInstanceListener {
 
         @Override
-        public void onSoundPlayed(SoundInstance sound, WeightedSoundSet soundSet, float range) {
+        public void onSoundPlayed(SoundInstance sound, WeightedSoundSet soundSet) {
             LuaTable event = createEvent(EventName.Sound);
             event.set(3, sound.getX() + " " + sound.getY() + " " + sound.getZ());
-
+    
             LuaTable details = new LuaTable();
-
+    
             try {
                 details.set("pitch", sound.getPitch());
             } catch (NullPointerException e) {
@@ -915,15 +915,13 @@ public class EventHandler {
             try {
                 details.set("pos", Utils.posToTable(sound.getX(), sound.getY(), sound.getZ()));
             } catch (NullPointerException ignored) {
-
             }
             try {
                 details.set("category", sound.getCategory().getName().toLowerCase());
             } catch (NullPointerException ignored) {
-
             }
             event.set(4, details);
-
+    
             LuaTable controls = new LuaTable();
             controls.set("isPlaying", new ZeroArgFunction() {
                 @Override
@@ -940,9 +938,7 @@ public class EventHandler {
             });
             event.set(5, controls);
             fireEvent(EventName.Sound, event);
-
         }
-
     }
 
     public void onEntityRenderPre(MatrixStack matrixStack, LivingEntity entity) {

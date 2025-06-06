@@ -3,8 +3,9 @@ package com.theincgi.advancedmacros.lua.functions;
 import com.theincgi.advancedmacros.event.TaskDispatcher;
 import com.theincgi.advancedmacros.misc.CallableTable;
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.gui.screen.multiplayer.DirectConnectScreen;
-import net.minecraft.client.gui.screen.multiplayer.MultiplayerScreen;
+import net.minecraft.client.gui.screen.ConnectScreen;
+import net.minecraft.client.gui.screen.Screen;
+import net.minecraft.client.network.ServerAddress;
 import net.minecraft.client.network.ServerInfo;
 import net.minecraft.client.resource.language.I18n;
 import org.luaj.vm2_v3_0_1.LuaValue;
@@ -23,21 +24,28 @@ public class Connect extends CallableTable {
 
             TaskDispatcher.addTask(() -> {
                 MinecraftClient mc = MinecraftClient.getInstance();
+
+                // Disconnect if already in a world
                 if (mc.world != null) {
                     Disconnect.disconnect();
                 }
-                ServerInfo sDat = new ServerInfo(I18n.translate("selectServer.defaultName"), "", ServerInfo.ServerType.OTHER);
-                sDat.address = arg.checkjstring();
 
-                MultiplayerScreen mp = new MultiplayerScreen(null);
+                // Prepare server info
+                String serverAddressString = arg.checkjstring();
+                ServerInfo serverInfo = new ServerInfo(
+                        I18n.translate("selectServer.defaultName"),
+                        serverAddressString,
+                        false
+                );
 
-                mc.setScreen(new DirectConnectScreen(mp, callback -> {
-                }, sDat)); //TESTME direct connect
+                ServerAddress serverAddress = ServerAddress.parse(serverInfo.address);
+                Screen prevScreen = mc.currentScreen;
 
+                // Start connecting
+                ConnectScreen.connect(prevScreen, mc, serverAddress, serverInfo, false);
             });
+
             return NONE;
         }
-
     }
-
 }

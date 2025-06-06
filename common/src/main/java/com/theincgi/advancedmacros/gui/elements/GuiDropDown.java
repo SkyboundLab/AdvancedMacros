@@ -232,14 +232,15 @@ public class GuiDropDown implements Drawable, InputSubscriber, Moveable {
         @Override
         public void onDraw(DrawContext drawContext, Gui gui, int mouseX, int mouseY, float partialTicks) {
             if (listManager.isVisible()) {
-                gui.renderBackground(drawContext, 10, mouseY, partialTicks);
-                //				listBG.setPos(x, listManager.getY());
-                //				listBG.setWidth(listManager.getItemWidth()-listManager.scrollBar.getItemHeight());
-                //				listBG.setHeight(listManager.getTotalHeight());
-                //				listBG.onDraw(gui, mouseX, mouseY, partialTicks);
-                //System.out.printf("MaxHeight: %s, Height: %s = %s\n", maxHeight, height, maxHeight-height);
-                //listManager.setHeight(maxHeight-height);
-
+                gui.renderBackground(drawContext);
+    
+                // listBG.setPos(x, listManager.getY());
+                // listBG.setWidth(listManager.getItemWidth()-listManager.scrollBar.getItemHeight());
+                // listBG.setHeight(listManager.getTotalHeight());
+                // listBG.onDraw(gui, mouseX, mouseY, partialTicks);
+                // System.out.printf("MaxHeight: %s, Height: %s = %s\n", maxHeight, height, maxHeight-height);
+                // listManager.setHeight(maxHeight-height);
+    
                 listManager.onDraw(drawContext, gui, mouseX, mouseY, partialTicks);
             }
         }

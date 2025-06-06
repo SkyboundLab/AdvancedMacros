@@ -11,4 +11,4 @@ rootProject.name = 'advancedmacros'
 
 include 'common'
 include 'fabric'
-include 'neoforge'
+// include 'neoforge'

@@ -106,7 +106,7 @@ public class MCTextBar extends ScriptGuiElement {
                 case maxStrLen:
                     return LuaValue.valueOf(((ITextFieldWidget) textField).am_getMaxLength());
                 case setCursorPos:
-                    textField.setCursor(args.arg1().checkint(), false);
+                    textField.setCursor(args.arg1().checkint());
                     return NONE;
                 case setDisabledTxtColor:
                     textField.setUneditableColor(Utils.parseColor(args, AdvancedMacros.COLOR_SPACE_IS_255).toInt());

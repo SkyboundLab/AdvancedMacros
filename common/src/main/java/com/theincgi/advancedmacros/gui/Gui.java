@@ -230,7 +230,7 @@ public class Gui extends Screen implements ParentElement {
         }
 
         if (drawDefaultBackground) {
-            renderBackground(drawContext, mouseX, mouseY, partialTicks); //prev default bg
+            renderBackground(drawContext); //prev default bg
         }
 
         if (MinecraftClient.getInstance().currentScreen == this) { //do not steal the child gui's events!
@@ -304,17 +304,16 @@ public class Gui extends Screen implements ParentElement {
     }
 
     @Override
-    public boolean mouseScrolled(double mouseX, double mouseY, double horizontalAmount, double verticalAmount) {
-        if (firstSubsciber != null && firstSubsciber.onScroll(this, verticalAmount)) {
+    public boolean mouseScrolled(double mouseX, double mouseY, double amount) {
+        if (firstSubsciber != null && firstSubsciber.onScroll(this, amount)) {
             return true;
         }
         synchronized (inputSubscribers) {
             for (InputSubscriber inputSubscriber : inputSubscribers) {
-                if (inputSubscriber.onScroll(this, verticalAmount)) {
+                if (inputSubscriber.onScroll(this, amount)) {
                     return true;
                 }
             }
-
         }
         return false;
     }

@@ -109,7 +109,7 @@ public class PopupPrompt implements InputSubscriber, Drawable {
         isVisible = true;
         ans = null;
         inputBox.setText("");
-        inputBox.setCursor(0, false);
+        inputBox.setCursor(0);
         inputBox.setFocused(true);
         gui.drawLast = this;
         //gui.nextKeyListen=null;
@@ -124,7 +124,7 @@ public class PopupPrompt implements InputSubscriber, Drawable {
         isVisible = true;
         ans = null;
         inputBox.setText("");
-        inputBox.setCursor(0, false);
+        inputBox.setCursor(0);
         inputBox.setFocused(false);
         gui.drawLast = this;
         //gui.nextKeyListen=null;
@@ -139,7 +139,7 @@ public class PopupPrompt implements InputSubscriber, Drawable {
         isVisible = true;
         ans = null;
         inputBox.setText("");
-        inputBox.setCursor(0, false);
+        inputBox.setCursor(0);
         inputBox.setFocused(false);
         gui.drawLast = this;
         //gui.nextKeyListen=null;
@@ -154,7 +154,7 @@ public class PopupPrompt implements InputSubscriber, Drawable {
         isVisible = true;
         ans = null;
         inputBox.setText("");
-        inputBox.setCursor(0, false);
+        inputBox.setCursor(0);
         inputBox.setFocused(false);
         gui.drawLast = this;
         //gui.nextKeyListen=null;
@@ -172,7 +172,7 @@ public class PopupPrompt implements InputSubscriber, Drawable {
     @Override
     public void onDraw(DrawContext drawContext, Gui gui, int mouseX, int mouseY, float partialTicks) {
         if (isVisible) {
-            gui.renderBackground(drawContext, mouseX, mouseY, partialTicks);
+            gui.renderBackground(drawContext);
             gui.drawBoxedRectangle(drawContext, x, y, width, height - 1, frame, fill);
             drawContext.drawText(gui.getFontRend(), msg, x + 3, y + 2, textColor, false);
             inputBox.render(drawContext, mouseX, mouseY, partialTicks);

@@ -11,6 +11,7 @@ import net.minecraft.registry.Registries;
 import org.luaj.vm2_v3_0_1.LuaTable;
 import org.luaj.vm2_v3_0_1.LuaValue;
 import org.luaj.vm2_v3_0_1.lib.OneArgFunction;
+import net.minecraft.registry.DynamicRegistryManager;
 
 public class GetRecipe extends CallableTable {
 
@@ -18,30 +19,27 @@ public class GetRecipe extends CallableTable {
 
     public GetRecipe() {
         super(new String[]{"getRecipe"}, new OneArgFunction() {
-
             @Override
             public LuaValue call(LuaValue arg) {
                 LuaTable types = new LuaTable();
+                DynamicRegistryManager registryManager = MinecraftClient.getInstance().world.getRegistryManager();
                 MinecraftClient.getInstance().world.getRecipeManager().values().forEach(r -> {
-                    LuaValue v = types.get(r.value().getType().toString()); //holds recipes of some type, like furnace recpies
+                    LuaValue v = types.get(r.getType().toString()); //holds recipes of some type, like furnace recipes
                     if (v.isnil()) {
-                        types.set(r.value().getType().toString(), v = new LuaTable());
+                        types.set(r.getType().toString(), v = new LuaTable());
                     }
-                    if (arg.isnil() || Registries.ITEM.getId(r.value().getResult(null).getItem()).toString().contains(arg.checkjstring())) { //no search item
-                        ItemStack output = r.value().getResult(null);
+                    if (arg.isnil() || Registries.ITEM.getId(r.getOutput(registryManager).getItem()).toString().contains(arg.checkjstring())) { //no search item
+                        ItemStack output = r.getOutput(registryManager);
                         LuaTable pair = new LuaTable();
-                        pair.set("in", recipeInputs(r.value()));
+                        pair.set("in", recipeInputs(r));
                         pair.set("out", Utils.itemStackToLuatable(output));
                         v.set(v.length() + 1, pair);
                     } else {
-
                     }
-
                 });
-
                 return types;
             }
-
+            
             private LuaValue recipeInputs(Recipe<?> r) {
                 LuaTable inputs;
                 if (r instanceof ShapedRecipe) {
@@ -62,7 +60,6 @@ public class GetRecipe extends CallableTable {
                 return inputs;
             }
         });
-
     }
 
     private static void setIngredient(LuaTable t, int x, int y, Ingredient i) {
